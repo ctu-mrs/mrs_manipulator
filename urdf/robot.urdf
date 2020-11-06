@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<robot name="mrs_manipulator">
+
+  <link name="base_link">
+        <inertial>
+            <mass value="0.525" />
+            <inertia ixx="0.00000312" ixy="0.0" ixz="0.0" iyy="0.00000912" iyz="0.0" izz="0.00000512"/>
+        </inertial>
+        <collision>
+            <geometry>
+                <box size="0.05 0.04 0.004" />
+            </geometry>
+        </collision>
+        <visual>
+            <geometry>
+                <box size="0.05 0.04 0.004" />
+            </geometry>
+        </visual>
+    </link>
+    
+    <link name="first_link">
+        <inertial>
+            <mass value="0.07" />
+            <inertia ixx="0.00002112" ixy="0.0" ixz="0.0" iyy="0.00002012" iyz="0.0" izz="0.00001212"/>
+        </inertial>
+        
+        <collision>
+            <geometry>
+                <box size="0.031 0.05 0.032" />
+            </geometry>
+        </collision>
+        <visual>
+            <geometry>
+                <box size="0.031 0.05 0.032" />
+            </geometry>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.006 0.0" />
+        </visual>
+    </link>
+    
+    <joint name="first_joint" type="revolute">
+        <parent link="base_link"/>
+        <child link="first_link"/>
+        <axis xyz="0 0 1"/>
+        <limit upper="3.14" lower="-3.14" effort="1" velocity="1.0" />
+        <origin xyz="0.0 0.011 0.047" rpy="0.0 0.0 0.0"/>
+    </joint>
+    
+    <link name="second_link">
+        <inertial>
+            <mass value="0.005" />
+            <inertia ixx="0.00000012" ixy="0.0" ixz="0.0" iyy="0.00000012" iyz="0.0" izz="0.00000012"/>
+        </inertial>
+        
+        <collision>
+            <geometry>
+                <box size="0.009 0.02 0.016" />
+            </geometry>
+        </collision>
+        <visual>
+            <geometry>
+                <box size="0.009 0.02 0.016" />
+            </geometry>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+        </visual>
+    </link>
+    
+    <joint name="second_joint" type="revolute">
+        <parent link="first_link"/>
+        <child link="second_link"/>
+        <axis xyz="1 0 0"/>
+        <limit upper="0." lower="-1.57" effort="1" velocity="1.0" />
+        <origin xyz="0.0 0.0 0.025" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>/mrs_manipulator</robotNamespace>
+        </plugin>
+    </gazebo>
+    
+    <transmission name="first_joint">
+        <type>transmission_interface/SimpleTransmission</type>
+        <actuator name="motor1">
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+        <joint name="first_joint">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+    </transmission>
+    
+    <transmission name="second_joint">
+        <type>transmission_interface/SimpleTransmission</type>
+        <actuator name="motor2">
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+        <joint name="second_joint">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+    </transmission>
+</robot>

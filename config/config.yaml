@@ -1,0 +1,14 @@
+mrs_manipulator:
+    joint_state_controller:
+        type: joint_state_controller/JointStateController
+        publish_rate: 50
+        
+    first_joint_controller:
+        type: position_controllers/JointPositionController
+        joint: first_joint
+        # pid: {p: 5.0, i: 0.0, d: 0.0}
+        
+    second_joint_controller:
+        type: position_controllers/JointPositionController
+        joint: second_joint
+        # pid: {p: 100.0, i: 0.2, d: 0.3}
